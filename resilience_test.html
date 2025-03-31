@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회복탄력성 자가진단</title>
+  <style>
+    body {
+      font-family: '맑은 고딕', sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options label {
+      margin-right: 15px;
+    }
+    button {
+      background-color: #2980b9;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h2>회복탄력성 자가진단</h2>
+  <form id="quizForm">
+    <div id="questions"></div>
+    <button type="button" onclick="calculateScore()">결과 보기</button>
+  </form>
+  <p id="result"></p>
+
+  <script>
+    const questions = [
+      "새로운 일이 주어져도 잘해낼 자신이 있다.",
+      "실패를 통해서도 배우고 다음에는 접근 방식을 바꾼다.",
+      "일이 계획대로 진행되지 않아도 불안해 하지 않는다.",
+      "내 주변에는 고민을 터놓을 친구나 동료가 있다.",
+      "어떤 상황이든 나 자신을 용납한다.",
+      "한 번 시작한 일은 끈기 있게 밀고 나간다.",
+      "스트레스를 해소하는 나만의 방법이 있다.",
+      "나 만을 위한 시간을 따로 갖는다.",
+      "미래에 대해 긍정적으로 생각한다.",
+      "내가 통제할 수 없는 문제들은 걱정하지 않는다.",
+      "도움을 청하는 것을 약점이라고 생각하지 않는다.",
+      "삶에 변화가 생기면 그에 맞게 생각을 바꾸려 한다.",
+      "감정적인 문제가 대인관계나 일을 방해하지 않는다.",
+      "감사해야 할 일이 많다.",
+      "나는 평소 ‘아니오’ 보다는 ‘예’ 라고 자주 말한다.",
+      "나는 언제나 사랑받는 사람이다."
+    ];
+
+    const questionsDiv = document.getElementById('questions');
+
+    questions.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.classList.add('question');
+      div.innerHTML = `<strong>${i + 1}. ${q}</strong><br>
+        <div class="options">
+          <label><input type="radio" name="q${i+1}" value="5"> 5</label>
+          <label><input type="radio" name="q${i+1}" value="4"> 4</label>
+          <label><input type="radio" name="q${i+1}" value="3"> 3</label>
+          <label><input type="radio" name="q${i+1}" value="2"> 2</label>
+          <label><input type="radio" name="q${i+1}" value="1"> 1</label>
+        </div>`;
+      questionsDiv.appendChild(div);
+    });
+
+    function calculateScore() {
+      let total = 0;
+      for (let i = 1; i <= questions.length; i++) {
+        const radios = document.getElementsByName('q' + i);
+        let answered = false;
+        for (const radio of radios) {
+          if (radio.checked) {
+            total += parseInt(radio.value);
+            answered = true;
+          }
+        }
+        if (!answered) {
+          alert(i + "번 문항에 응답하지 않았습니다.");
+          return;
+        }
+      }
+
+      let resultText = `총점: ${total}점\n`;
+
+      if (total >= 64) {
+        resultText += "회복탄력성이 매우 높은 상태입니다.";
+      } else if (total >= 48) {
+        resultText += "회복탄력성이 일반적인 수준입니다.";
+      } else if (total >= 32) {
+        resultText += "회복탄력성이 다소 낮은 편입니다.";
+      } else {
+        resultText += "회복탄력성 강화가 필요합니다.";
+      }
+
+      document.getElementById("result").innerText = resultText;
+    }
+  </script>
+</body>
+</html>
